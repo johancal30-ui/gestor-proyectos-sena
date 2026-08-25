@@ -27,7 +27,7 @@ class Tarea(models.Model):
     ]
 
     # Relacion 1 a muchos: Un proyecto tiene muchas tareas
-    Proyecto = models.ForeignKey(
+    proyecto = models.ForeignKey(
         Proyecto,
         on_delete=models.CASCADE,
         related_name='tareas'

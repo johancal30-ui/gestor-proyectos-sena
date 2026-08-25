@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 from django.http import HttpResponse
 from .models import Proyecto, Tarea
 
@@ -15,6 +16,7 @@ def nuevos_registros(request):
 
 def ver_proyecto(request, id):
     proyecto = Proyecto.objects.get(id=id)
+    print(proyecto.tareas.all)
     return render(request, 'detalle_proyecto.html', {'proyecto': proyecto})
 
 def nuevo_proyecto(request):
@@ -63,7 +65,19 @@ def crear_tarea(request, proyecto_id):
 
 
     if request.method == "POST":
-        pass
+        titulo = request.POST.get('titulo').strip()
+        prioridad = request.POST.get('prioridad')
+        estado = request.POST.get('estado')
+
+        if titulo: 
+            tarea = Tarea(titulo= titulo, 
+                          prioridad=prioridad, 
+                          estado=estado, 
+                          proyecto=proyecto)
+            tarea.save()
+
+            return redirect('ver_proyecto', id=proyecto_id)
+        
 
     datos = {
         'proyecto': proyecto,
@@ -73,3 +87,32 @@ def crear_tarea(request, proyecto_id):
 
     return render(request, 'crear_tarea.html', datos)
 
+def avanzar_estado_tarea(request, id):
+    tarea = get_object_or_404(Tarea, id=id)
+
+    if tarea.estado == "PENDIENTE":
+        tarea.estado = "EN_PROGRESO"
+        tarea.save()
+
+    elif tarea.estado == "EN_PROGRESO":
+        tarea.estado = "COMPLETADA"
+        tarea.save()
+
+    return redirect('ver_proyecto', id=tarea.proyecto.id)
+
+@require_POST
+def completar_tarea(request, id):
+    tarea = get_object_or_404(Tarea, id=id)
+
+    if tarea.estado != "COMPLETADA":
+        tarea.estado = "COMPLETADA"
+        tarea.save()
+
+    return redirect("ver_proyecto", id= tarea.proyecto.id)
+
+def eliminar_tarea(request, id):
+    tarea= get_object_or_404(Tarea, id=id)
+
+    id_proyecto = tarea.proyecto.id
+    tarea.delete()
+    return redirect ('ver_proyecto', id=id_proyecto)
