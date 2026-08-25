@@ -1,5 +1,9 @@
 # Entorno virtual
+.venv/
 venv/
 
 # Base de datos local
 db.sqlite3
+
+# Cache
+__pycache__/
