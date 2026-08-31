@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acerca de - Johan Castillo | Aprendiz SENA ADSO</title>
+    <style>
+        /* ===== RESET Y BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ===== HEADER / NAV ===== */
+        header {
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #0b3b2c;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+            color: #2e7d32;
+        }
+
+        .logo span {
+            color: #2e7d32;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            font-weight: 500;
+        }
+
+        nav ul li a {
+            color: #334155;
+            transition: color 0.2s;
+            padding: 0.25rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        nav ul li a:hover {
+            color: #2e7d32;
+            border-bottom-color: #2e7d32;
+        }
+
+        nav ul li a.active {
+            color: #2e7d32;
+            border-bottom-color: #2e7d32;
+        }
+
+        /* ===== MAIN ===== */
+        main {
+            flex: 1;
+            padding: 3rem 0;
+        }
+
+        /* ===== PERFIL ===== */
+        .perfil {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            background: #ffffff;
+            border-radius: 2rem;
+            padding: 2.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .perfil-avatar {
+            flex-shrink: 0;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2e7d32, #66bb6a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(46, 125, 50, 0.3);
+        }
+
+        .perfil-info h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #0b3b2c;
+            margin-bottom: 0.25rem;
+        }
+
+        .perfil-info .badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 600;
+            padding: 0.3rem 1.2rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.3px;
+        }
+
+        .perfil-info p {
+            font-size: 1.1rem;
+            color: #475569;
+            max-width: 550px;
+        }
+
+        .perfil-info .sena-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f1f5f9;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #0b3b2c;
+            margin-top: 0.5rem;
+        }
+
+        .sena-logo i {
+            font-size: 1.2rem;
+        }
+
+        /* ===== SECCIONES ===== */
+        .seccion {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            margin-bottom: 2.5rem;
+        }
+
+        .seccion h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #0b3b2c;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .seccion h2 i {
+            color: #2e7d32;
+            font-size: 1.6rem;
+        }
+
+        .seccion p {
+            color: #334155;
+            margin-bottom: 0.75rem;
+        }
+
+        .grid-dos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 700px) {
+            .grid-dos {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        /* ===== HABILIDADES ===== */
+        .habilidades-lista {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .habilidad-tag {
+            background: #e8f5e9;
+            color: #1e4a2b;
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border: 1px solid #c8e6c9;
+            transition: 0.2s;
+        }
+
+        .habilidad-tag:hover {
+            background: #c8e6c9;
+            transform: scale(1.02);
+        }
+
+        /* ===== PROYECTOS / INTERESES ===== */
+        .intereses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .interes-item {
+            background: #f8fafc;
+            padding: 1rem 1.2rem;
+            border-radius: 1rem;
+            text-align: center;
+            font-weight: 500;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            transition: 0.2s;
+        }
+
+        .interes-item:hover {
+            background: #e8f5e9;
+            border-color: #a5d6a7;
+            transform: translateY(-2px);
+        }
+
+        .interes-item i {
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 0.4rem;
+            color: #2e7d32;
+        }
+
+        /* ===== CONTACTO ===== */
+        .contacto-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .contacto-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f1f5f9;
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #1e293b;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .contacto-links a:hover {
+            background: #e8f5e9;
+            border-color: #a5d6a7;
+            color: #0b3b2c;
+            transform: scale(1.02);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: #0b3b2c;
+            color: #d1e0d6;
+            padding: 1.5rem 0;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        footer .sena-footer {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: #b9d9c0;
+        }
+
+        footer .sena-footer i {
+            font-size: 1.4rem;
+            color: #81c784;
+        }
+
+        footer small {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .perfil {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem 1.5rem;
+            }
+
+            .perfil-info p {
+                margin: 0 auto;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            nav ul {
+                gap: 1.2rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .seccion {
+                padding: 1.5rem;
+            }
+
+            .contacto-links {
+                justify-content: center;
+            }
+
+            footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .perfil-avatar {
+                width: 140px;
+                height: 140px;
+                font-size: 3.8rem;
+            }
+
+            .perfil-info h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* ===== ICONOS (emojis como fallback, sin FontAwesome) ===== */
+        .icon-emoji {
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <span>👨‍💻</span>
+                <span>Johan<span>Castillo</span></span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#" class="active">Acerca de</a></li>
+                    <li><a href="#">Portafolio</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main>
+        <div class="container">
+
+            <!-- PERFIL -->
+            <section class="perfil">
+                <div class="perfil-avatar">
+                    <span>👤</span>
+                </div>
+                <div class="perfil-info">
+                    <h1>Johan Castillo</h1>
+                    <span class="badge">Aprendiz SENA · ADSO</span>
+                    <p>
+                        Apasionado por el desarrollo de software, el aprendizaje continuo y la
+                        construcción de soluciones tecnológicas con impacto social.
+                    </p>
+                    <div class="sena-logo">
+                        <span>🏛️</span> SENA - Centro de Tecnologías
+                    </div>
+                </div>
+            </section>
+
+            <!-- FORMACIÓN -->
+            <section class="seccion">
+                <h2><span>📘</span> Formación</h2>
+                <div class="grid-dos">
+                    <div>
+                        <p><strong>💼 Tecnólogo en Análisis y Desarrollo de Software (ADSO)</strong></p>
+                        <p style="color: #2e7d32; font-weight: 500;">SENA · 2025 – 2027</p>
+                        <p>
+                            Formación integral en ciclo de vida del software, metodologías ágiles,
+                            programación, bases de datos, y desarrollo de aplicaciones web y móviles.
+                        </p>
+                    </div>
+                    <div>
+                        <p><strong>🎯 Competencias clave</strong></p>
+                        <ul style="list-style: none; padding-left: 0; margin-top: 0.3rem;">
+                            <li>✓ Análisis de requisitos y diseño de sistemas</li>
+                            <li>✓ Desarrollo frontend y backend</li>
+                            <li>✓ Gestión de proyectos con Scrum</li>
+                            <li>✓ Trabajo en equipo y comunicación efectiva</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HABILIDADES TÉCNICAS -->
+            <section class="seccion">
+                <h2><span>🛠️</span> Habilidades técnicas</h2>
+                <p>Lenguajes, frameworks y herramientas que estoy aprendiendo y aplicando:</p>
+                <div class="habilidades-lista">
+                    <span class="habilidad-tag">HTML5</span>
+                    <span class="habilidad-tag">CSS3</span>
+                    <span class="habilidad-tag">JavaScript</span>
+                    <span class="habilidad-tag">Python</span>
+                    <span class="habilidad-tag">Java</span>
+                    <span class="habilidad-tag">SQL</span>
+                    <span class="habilidad-tag">Git & GitHub</span>
+                    <span class="habilidad-tag">React (básico)</span>
+                    <span class="habilidad-tag">Node.js (básico)</span>
+                    <span class="habilidad-tag">Figma</span>
+                    <span class="habilidad-tag">Scrum</span>
+                </div>
+            </section>
+
+            <!-- INTERESES Y PROYECTOS -->
+            <section class="seccion">
+                <h2><span>🚀</span> Intereses y proyectos</h2>
+                <p>
+                    Me motiva crear aplicaciones que resuelvan problemas reales. Actualmente
+                    colaboro en proyectos académicos y personales enfocados en:
+                </p>
+                <div class="intereses-grid">
+                    <div class="interes-item">
+                        <span>🌐</span> Desarrollo web
+                    </div>
+                    <div class="interes-item">
+                        <span>📱</span> Apps móviles
+                    </div>
+                    <div class="interes-item">
+                        <span>🤖</span> Automatización
+                    </div>
+                    <div class="interes-item">
+                        <span>📊</span> Análisis de datos
+                    </div>
+                    <div class="interes-item">
+                        <span>☁️</span> Cloud computing
+                    </div>
+                    <div class="interes-item">
+                        <span>🧩</span> UX/UI
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACTO -->
+            <section class="seccion">
+                <h2><span>📬</span> Conecta conmigo</h2>
+                <p>Estoy abierto a colaborar, aprender y compartir conocimientos. </p>
+                <div class="contacto-links">
+                    <a href="#" title="Correo electrónico">📧 johan.castillo@misena.edu.co</a>
+                    <a href="#" title="GitHub">🐙 github.com/johancastillo</a>
+                    <a href="#" title="LinkedIn">🔗 linkedin.com/in/johancastillo</a>
+                    <a href="#" title="Portafolio">📂 portafolio.dev</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="sena-footer">
+                <span>🏛️</span> SENA · Tecnólogo ADSO
+            </div>
+            <small>
+                &copy; 2026 Johan Castillo — Aprendiz apasionado por el software
+            </small>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,13 +1,13 @@
 from django.db import models
 
 class Proyecto(models.Model):
-
     '''
     Model que representa un proyecto
     '''
     nombre= models.CharField(max_length=100) #Campo de texto (varchar)
     descripcion= models.TextField() #Campo de texto largo (text)
     duracion= models.IntegerField() #Campo de numero entero (int)
+    imagen = models.ImageField(upload_to='img/', default='img/logo.png')
 
 class Tarea(models.Model):
     '''
