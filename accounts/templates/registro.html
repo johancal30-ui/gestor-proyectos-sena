@@ -1,229 +1,220 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro · Gestor de Proyectos</title>
-    <!-- Tailwind CSS v3 -->
+    <!-- Tailwind CSS v4 -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fuente Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
-    <!-- Font Awesome (iconos) -->
+    <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
         }
-        .input-transition {
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        .register-card {
+            transition: box-shadow 0.15s ease, transform 0.1s ease;
         }
-        .input-transition:focus {
+        .register-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.02);
+            transform: translateY(-1px);
+        }
+        input {
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input:focus {
             outline: none;
-            border-color: #6366f1; /* indigo-500 */
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
-        /* Para que los mensajes de error no desordenen el layout */
-        .errorlist {
-            list-style: none;
-            margin: 0.25rem 0 0 0;
-            padding: 0;
-            font-size: 0.8rem;
-            color: #dc2626;
+        .btn-primary {
+            transition: all 0.15s ease;
         }
-        .errorlist li {
-            margin-top: 0.15rem;
+        .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            transform: translateY(0px);
+        }
+        .error-message {
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Iconos SVG inline de Tailwind 4 (Heroicons) */
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            flex-shrink: 0;
+        }
+        .icon-sm {
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50/80 p-4 font-sans antialiased">
+<body class="antialiased text-slate-700 min-h-screen flex items-center justify-center p-4 md:p-6">
 
-    <!-- Tarjeta principal (mismo estilo) -->
-    <div class="w-full max-w-2xl bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl shadow-blue-200/50 border border-white/40 p-6 md:p-10 transition-all hover:shadow-2xl hover:shadow-blue-300/30">
-
-        <!-- Icono / Logo -->
-        <div class="flex justify-center mb-5">
-            <div class="bg-indigo-100 p-4 rounded-2xl text-indigo-600 shadow-sm shadow-indigo-200/40">
-                <i class="fa-regular fa-user-plus text-3xl"></i>
+    <main class="w-full max-w-lg">
+        <!-- Tarjeta de registro -->
+        <div class="register-card bg-white border border-slate-200/80 rounded-2xl p-6 md:p-8 shadow-sm">
+            
+            <!-- Logo y título -->
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4">
+                    <img src="{% static 'img/logo.png' %}" alt="Logo">
+                </div>
+                <h1 class="text-2xl font-bold text-slate-800">Crear cuenta</h1>
+                <p class="text-sm text-slate-500 mt-1">Regístrate para comenzar a gestionar tus proyectos</p>
             </div>
-        </div>
 
-        <!-- Título -->
-        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 text-center tracking-tight">
-            Crear cuenta
-        </h1>
-        <p class="text-sm text-slate-500 text-center mt-1 mb-6 font-light">
-            Regístrate para empezar a gestionar tus proyectos
-        </p>
-
-        <!-- Formulario -->
-        <form method="post" class="space-y-4">
-            {% csrf_token %}
-
-            <!-- Fila: Usuario (ocupa todo el ancho) -->
-            <div>
-                <label for="username" class="block text-sm font-medium text-slate-700 mb-1.5">
-                    <i class="fa-regular fa-user mr-1.5 text-indigo-400"></i>Usuario
-                </label>
-                <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    placeholder="Nombre de usuario"
-                    value="{{ form.username.value|default:'' }}"
-                    required
-                    class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
-                >
-                {% if form.username.errors %}
-                    <ul class="errorlist">
-                        {% for error in form.username.errors %}
-                            <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
+            {% if errors %}
+                <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px;">
+                    <ul>
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
                         {% endfor %}
                     </ul>
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
 
-            <!-- Dos columnas: Nombre y Apellido (en md+) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label for="first_name" class="block text-sm font-medium text-slate-700 mb-1.5">
-                        <i class="fa-regular fa-user mr-1.5 text-indigo-400"></i>Nombre
+            <!-- Formulario de registro -->
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                
+                <!-- Campo: Usuario -->
+                <div class="space-y-1.5">
+                    <label for="username" class="text-sm font-medium text-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        Usuario
                     </label>
-                    <input
-                        type="text"
-                        name="first_name"
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username"
+                        value="{{ datos.username|default:'' }}"
+                        required
+                        placeholder="Ej. juan123"
+                        class="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-slate-700 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                    >
+                </div>
+
+                <!-- Campo: Nombre -->
+                <div class="space-y-1.5">
+                    <label for="first_name" class="text-sm font-medium text-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-id-badge"></i>
+                        Nombre
+                    </label>
+                    <input 
+                        type="text" 
+                        name="first_name" 
                         id="first_name"
-                        placeholder="Nombre"
-                        value="{{ form.first_name.value|default:'' }}"
+                        value="{{ datos.first_name|default:'' }}"
                         required
-                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                        placeholder="Ej. Juan"
+                        class="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-slate-700 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                     >
-                    {% if form.first_name.errors %}
-                        <ul class="errorlist">
-                            {% for error in form.first_name.errors %}
-                                <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
                 </div>
-                <div>
-                    <label for="last_name" class="block text-sm font-medium text-slate-700 mb-1.5">
-                        <i class="fa-regular fa-user mr-1.5 text-indigo-400"></i>Apellido
+
+                <!-- Campo: Apellido -->
+                <div class="space-y-1.5">
+                    <label for="last_name" class="text-sm font-medium text-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-id-badge"></i>
+                        Apellido
                     </label>
-                    <input
-                        type="text"
-                        name="last_name"
+                    <input 
+                        type="text" 
+                        name="last_name" 
                         id="last_name"
-                        placeholder="Apellido"
-                        value="{{ form.last_name.value|default:'' }}"
+                        value="{{ datos.last_name|default:'' }}"
                         required
-                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                        placeholder="Ej. Pérez"
+                        class="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-slate-700 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                     >
-                    {% if form.last_name.errors %}
-                        <ul class="errorlist">
-                            {% for error in form.last_name.errors %}
-                                <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
                 </div>
-            </div>
 
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">
-                    <i class="fa-regular fa-envelope mr-1.5 text-indigo-400"></i>Correo electrónico
-                </label>
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="ejemplo@correo.com"
-                    value="{{ form.email.value|default:'' }}"
-                    required
-                    class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
-                >
-                {% if form.email.errors %}
-                    <ul class="errorlist">
-                        {% for error in form.email.errors %}
-                            <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-
-            <!-- Contraseña y confirmación (dos columnas) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label for="password1" class="block text-sm font-medium text-slate-700 mb-1.5">
-                        <i class="fa-regular fa-lock mr-1.5 text-indigo-400"></i>Contraseña
+                <!-- Campo: Email -->
+                <div class="space-y-1.5">
+                    <label for="email" class="text-sm font-medium text-slate-700 flex items-center gap-2">
+                        <!-- Icono Envelope (Heroicons) -->
+                        <i class="fa-solid fa-envelope"></i>
+                        Correo electrónico
                     </label>
-                    <input
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email"
+                        value="{{ datos.email|default:'' }}"
+                        required
+                        placeholder="ejemplo@correo.com"
+                        class="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-slate-700 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+                    >
+                </div>
+
+                <!-- Campo: Contraseña -->
+                <div class="space-y-1.5">
+                    <label for="password1" class="text-sm font-medium text-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-lock"></i>
+                        Contraseña
+                    </label>
+                    <input 
                         type="password"
                         name="password1"
                         id="password1"
-                        placeholder="********"
                         required
-                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                        placeholder="********"
+                        class="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-slate-700 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                     >
-                    {% if form.password1.errors %}
-                        <ul class="errorlist">
-                            {% for error in form.password1.errors %}
-                                <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
                 </div>
-                <div>
-                    <label for="password2" class="block text-sm font-medium text-slate-700 mb-1.5">
-                        <i class="fa-regular fa-check-circle mr-1.5 text-indigo-400"></i>Confirmar contraseña
+
+                <!-- Campo: Confirmar contraseña -->
+                <div class="space-y-1.5">
+                    <label for="password2" class="text-sm font-medium text-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-lock"></i>
+                        Confirmar contraseña
                     </label>
-                    <input
+                    <input 
                         type="password"
                         name="password2"
                         id="password2"
-                        placeholder="********"
                         required
-                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                        placeholder="********"
+                        class="w-full px-4 py-2.5 bg-slate-50/70 border border-slate-200/80 rounded-xl text-slate-700 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                     >
-                    {% if form.password2.errors %}
-                        <ul class="errorlist">
-                            {% for error in form.password2.errors %}
-                                <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
                 </div>
-            </div>
 
-            <!-- Botón de envío -->
-            <div class="pt-3">
-                <button
-                    type="submit"
-                    class="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-xl shadow-md shadow-indigo-200/50 hover:shadow-lg transition-all duration-200"
-                >
-                    <i class="fa-regular fa-user-plus"></i>
+                <!-- Botón de submit -->
+                <button type="submit" 
+                        class="btn-primary w-full inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-xl border border-indigo-600 hover:bg-indigo-700 hover:border-indigo-700 transition-all duration-150 shadow-sm hover:shadow mt-2">
+                    <i class="fa-solid fa-user-plus"></i>
                     Crear cuenta
                 </button>
-            </div>
-        </form>
+            </form>
 
-        <!-- Pie con enlace a login -->
-        <div class="mt-6 text-center text-sm text-slate-500 border-t border-slate-200/50 pt-5">
-            ¿Ya tienes una cuenta?
-            <a href="{% url 'login' %}" class="text-indigo-600 font-medium hover:text-indigo-800 transition-colors hover:underline">
-                Inicia sesión
-            </a>
+            <!-- Enlace a login -->
+            <div class="mt-6 text-center text-sm text-slate-500 border-t border-slate-200/60 pt-5">
+                ¿Ya tienes cuenta? 
+                <a href="{% url 'login' %}" class="font-medium text-indigo-600 hover:text-indigo-700 hover:underline transition-colors">
+                    Inicia sesión
+                </a>
+            </div>
         </div>
 
-        <!-- Mensajes de error generales (si los hay) -->
-        {% if form.non_field_errors %}
-            <div class="mt-4 text-sm text-red-600 bg-red-50/80 border border-red-200/60 rounded-xl px-4 py-3 flex items-start gap-2">
-                <i class="fa-regular fa-circle-exclamation text-red-500 mt-0.5"></i>
-                <span>{{ form.non_field_errors }}</span>
-            </div>
-        {% endif %}
-
-    </div>
+        <!-- Pie de página sutil -->
+        <div class="mt-6 text-xs text-slate-400 text-center">
+            <span class="flex items-center justify-center gap-2">
+                <svg class="icon-sm text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                Gestor de Proyectos
+            </span>
+        </div>
+    </main>
 
 </body>
 </html>
