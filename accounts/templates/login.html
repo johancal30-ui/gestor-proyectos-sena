@@ -3,36 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Iniciar sesión · Gestor de Proyectos</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente Inter (opcional pero recomendada) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        /* Transiciones suaves */
+        .input-transition {
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .input-transition:focus {
+            outline: none;
+            border-color: #6366f1; /* indigo-500 */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+    </style>
 </head>
-<body>
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <div>
-            <label for="username">Usuario</label>
-            <input 
-            type="text" 
-            name="username" 
-            id="username"
-            placeholder="Nombre de usuario"
-            required
-            autofocus
-            value="{{ form.username.value|default:'' }}"
-            >
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50/80 p-4 font-sans antialiased">
+
+    <!-- Tarjeta principal (mismo estilo que detalle_proyecto) -->
+    <div class="w-full max-w-md bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl shadow-blue-200/50 border border-white/40 p-8 md:p-10 transition-all hover:shadow-2xl hover:shadow-blue-300/30">
+
+        <!-- Icono / Logo (opcional) -->
+        <div class="flex justify-center mb-6">
+            <div class="bg-indigo-100 p-4 rounded-2xl text-indigo-600 shadow-sm shadow-indigo-200/40">
+                <i class="fa-regular fa-user text-3xl"></i>
+            </div>
         </div>
-         <div>
-            <label for="password">COntraseña</label>
-            <input 
-            type="password" 
-            name="password" 
-            id="password"
-            placeholder="********"
-            required
-            >
-        </div>
-        <div>
-            <button type="submit">Entrar</button>
-        </div>
+
+        <!-- Título -->
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 text-center tracking-tight">
+            Iniciar sesión
+        </h1>
+        <p class="text-sm text-slate-500 text-center mt-1 mb-6 font-light">
+            Accede a tu cuenta de Gestor de Proyectos
+        </p>
+
+        <!-- Formulario -->
+        <form action="{% url 'login' %}" method="post" class="space-y-5">
+            {% csrf_token %}
+
+            <!-- Campo: Usuario -->
+            <div>
+                <label for="username" class="block text-sm font-medium text-slate-700 mb-1.5">
+                    Usuario
+                </label>
+                <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Nombre de usuario"
+                    required
+                    autofocus
+                    value="{{ form.username.value|default:'' }}"
+                    class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                >
+            </div>
+
+            <!-- Campo: Contraseña -->
+            <div>
+                <div class="flex justify-between items-center mb-1.5">
+                    <label for="password" class="block text-sm font-medium text-slate-700">
+                        Contraseña
+                    </label>
+                    <!-- Enlace para recuperar contraseña (opcional) -->
+                    <a href="#" class="text-xs text-indigo-500 hover:text-indigo-700 transition-colors font-medium">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
+                <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="********"
+                    required
+                    class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                >
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="pt-2">
+                <button
+                    type="submit"
+                    class="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-xl shadow-md shadow-indigo-200/50 hover:shadow-lg transition-all duration-200"
+                >
+                    <i class="fa-regular fa-arrow-right-to-bracket"></i>
+                    Entrar
+                </button>
+            </div>
         </form>
+
+        <!-- Pie con registro -->
+        <div class="mt-6 text-center text-sm text-slate-500 border-t border-slate-200/50 pt-5">
+            ¿No tienes una cuenta?
+            <a href="{% url 'registro' %}" class="text-indigo-600 font-medium hover:text-indigo-800 transition-colors hover:underline">
+                Regístrate
+            </a>
+        </div>
+
+        <!-- Mensaje de error (si existe) -->
+        {% if form.errors %}
+        <div class="mt-4 text-sm text-red-600 bg-red-50/80 border border-red-200/60 rounded-xl px-4 py-3 flex items-start gap-2">
+            <i class="fa-regular fa-circle-exclamation text-red-500 mt-0.5"></i>
+            <span>Usuario o contraseña incorrectos. Inténtalo de nuevo.</span>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- Font Awesome (para iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
 </body>
-</html> 
+</html>
