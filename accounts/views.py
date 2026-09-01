@@ -37,4 +37,4 @@ def registro(request):
             )
             login(request, user)
             return redirect('home')
-    return render(request, 'registration/registro.html', {'errors': errors, 'datos': datos})
+    return render(request, 'registro.html', {'errors': errors, 'datos': datos})
