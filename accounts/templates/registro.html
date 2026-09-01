@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro · Gestor de Proyectos</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+    <!-- Font Awesome (iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .input-transition {
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .input-transition:focus {
+            outline: none;
+            border-color: #6366f1; /* indigo-500 */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        /* Para que los mensajes de error no desordenen el layout */
+        .errorlist {
+            list-style: none;
+            margin: 0.25rem 0 0 0;
+            padding: 0;
+            font-size: 0.8rem;
+            color: #dc2626;
+        }
+        .errorlist li {
+            margin-top: 0.15rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50/80 p-4 font-sans antialiased">
+
+    <!-- Tarjeta principal (mismo estilo) -->
+    <div class="w-full max-w-2xl bg-white/70 backdrop-blur-sm rounded-3xl shadow-xl shadow-blue-200/50 border border-white/40 p-6 md:p-10 transition-all hover:shadow-2xl hover:shadow-blue-300/30">
+
+        <!-- Icono / Logo -->
+        <div class="flex justify-center mb-5">
+            <div class="bg-indigo-100 p-4 rounded-2xl text-indigo-600 shadow-sm shadow-indigo-200/40">
+                <i class="fa-regular fa-user-plus text-3xl"></i>
+            </div>
+        </div>
+
+        <!-- Título -->
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 text-center tracking-tight">
+            Crear cuenta
+        </h1>
+        <p class="text-sm text-slate-500 text-center mt-1 mb-6 font-light">
+            Regístrate para empezar a gestionar tus proyectos
+        </p>
+
+        <!-- Formulario -->
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+
+            <!-- Fila: Usuario (ocupa todo el ancho) -->
+            <div>
+                <label for="username" class="block text-sm font-medium text-slate-700 mb-1.5">
+                    <i class="fa-regular fa-user mr-1.5 text-indigo-400"></i>Usuario
+                </label>
+                <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Nombre de usuario"
+                    value="{{ form.username.value|default:'' }}"
+                    required
+                    class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                >
+                {% if form.username.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.username.errors %}
+                            <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Dos columnas: Nombre y Apellido (en md+) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="first_name" class="block text-sm font-medium text-slate-700 mb-1.5">
+                        <i class="fa-regular fa-user mr-1.5 text-indigo-400"></i>Nombre
+                    </label>
+                    <input
+                        type="text"
+                        name="first_name"
+                        id="first_name"
+                        placeholder="Nombre"
+                        value="{{ form.first_name.value|default:'' }}"
+                        required
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                    >
+                    {% if form.first_name.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.first_name.errors %}
+                                <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="last_name" class="block text-sm font-medium text-slate-700 mb-1.5">
+                        <i class="fa-regular fa-user mr-1.5 text-indigo-400"></i>Apellido
+                    </label>
+                    <input
+                        type="text"
+                        name="last_name"
+                        id="last_name"
+                        placeholder="Apellido"
+                        value="{{ form.last_name.value|default:'' }}"
+                        required
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                    >
+                    {% if form.last_name.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.last_name.errors %}
+                                <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">
+                    <i class="fa-regular fa-envelope mr-1.5 text-indigo-400"></i>Correo electrónico
+                </label>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="ejemplo@correo.com"
+                    value="{{ form.email.value|default:'' }}"
+                    required
+                    class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                >
+                {% if form.email.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.email.errors %}
+                            <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <!-- Contraseña y confirmación (dos columnas) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="password1" class="block text-sm font-medium text-slate-700 mb-1.5">
+                        <i class="fa-regular fa-lock mr-1.5 text-indigo-400"></i>Contraseña
+                    </label>
+                    <input
+                        type="password"
+                        name="password1"
+                        id="password1"
+                        placeholder="********"
+                        required
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                    >
+                    {% if form.password1.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password1.errors %}
+                                <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="password2" class="block text-sm font-medium text-slate-700 mb-1.5">
+                        <i class="fa-regular fa-check-circle mr-1.5 text-indigo-400"></i>Confirmar contraseña
+                    </label>
+                    <input
+                        type="password"
+                        name="password2"
+                        id="password2"
+                        placeholder="********"
+                        required
+                        class="w-full px-4 py-2.5 rounded-xl border border-slate-200/70 bg-white/60 text-slate-800 placeholder-slate-400 input-transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200/50"
+                    >
+                    {% if form.password2.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password2.errors %}
+                                <li><i class="fa-regular fa-circle-exclamation mr-1"></i>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Botón de envío -->
+            <div class="pt-3">
+                <button
+                    type="submit"
+                    class="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-xl shadow-md shadow-indigo-200/50 hover:shadow-lg transition-all duration-200"
+                >
+                    <i class="fa-regular fa-user-plus"></i>
+                    Crear cuenta
+                </button>
+            </div>
+        </form>
+
+        <!-- Pie con enlace a login -->
+        <div class="mt-6 text-center text-sm text-slate-500 border-t border-slate-200/50 pt-5">
+            ¿Ya tienes una cuenta?
+            <a href="{% url 'login' %}" class="text-indigo-600 font-medium hover:text-indigo-800 transition-colors hover:underline">
+                Inicia sesión
+            </a>
+        </div>
+
+        <!-- Mensajes de error generales (si los hay) -->
+        {% if form.non_field_errors %}
+            <div class="mt-4 text-sm text-red-600 bg-red-50/80 border border-red-200/60 rounded-xl px-4 py-3 flex items-start gap-2">
+                <i class="fa-regular fa-circle-exclamation text-red-500 mt-0.5"></i>
+                <span>{{ form.non_field_errors }}</span>
+            </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
